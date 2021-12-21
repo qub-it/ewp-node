@@ -1,0 +1,51 @@
+version: '3.4'
+services:
+
+  ewpnode:
+    image: "ewp-node:dev"
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    container_name: ewpnode
+    hostname: ewpnode
+    volumes: 
+     - ./src/main/resources/application-dev.yml:/config/application.yml
+     - ./plugins:/plugins
+    ports: 
+      - "9900:5005"
+      - "9443:8443"
+     
+
+  #Generate access token first: https://github.com/erasmus-without-paper/ewp-registry-service
+  ewpregistry:
+      image: "docker.pkg.github.com/erasmus-without-paper/ewp-registry-service/ewp-registry-service:latest"
+      stdin_open: true
+      tty: true
+      restart: unless-stopped
+      container_name: ewpregistry
+      hostname: ewpregistry
+      volumes: 
+       - ./docker/registry/dev/data:/root
+       - ./src/main/resources/keystore/localhost.p12:/opt/keystore.p12
+       - ./plugins:/plugins
+      ports: 
+       - "9500:8000"
+      entrypoint: /root/entrypoint.sh
+
+  # google_chrome:
+  #    container_name: google-chrome
+  #    hostname: google-chrome
+  #    restart: unless-stopped
+  #    image: googlechromedocker:latest
+  #    tty: true
+  #    environment:
+  #      - DISPLAY
+  #    volumes:
+  #      # X Client bind mount
+  #      - '/tmp/.X11-unix:/tmp/.X11-unix'
+
+
+networks:
+  default:
+    external:
+      name: development
