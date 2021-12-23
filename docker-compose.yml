@@ -32,17 +32,17 @@ services:
        - "9500:8000"
       entrypoint: /root/entrypoint.sh
 
-  # google_chrome:
-  #    container_name: google-chrome
-  #    hostname: google-chrome
-  #    restart: unless-stopped
-  #    image: googlechromedocker:latest
-  #    tty: true
-  #    environment:
-  #      - DISPLAY
-  #    volumes:
-  #      # X Client bind mount
-  #      - '/tmp/.X11-unix:/tmp/.X11-unix'
+  google_chrome:
+     container_name: google-chrome
+     hostname: google-chrome
+     restart: unless-stopped
+     image: googlechromedocker:latest
+     tty: true
+     environment:
+       - DISPLAY
+     volumes:
+       # X Client bind mount
+       - '/tmp/.X11-unix:/tmp/.X11-unix'
 
 
 networks:
